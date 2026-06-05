@@ -21,7 +21,23 @@ const createNote = async (req, res) => {
   }
 };
 
+const getAllNotes = async (req, res) => {
+  try {
+    const notes = await Note.find();
+
+    res.status(200).json({
+      success: true,
+      count: notes.length,
+      data: notes,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch notes",
+      error: err.message,
+    });
+  }
+};
 
 
-
-module.exports = { createNote, };
+module.exports = { createNote, getAllNotes };
