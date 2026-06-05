@@ -145,4 +145,22 @@ const deleteNote = async (req, res) => {
   }
 };
 
-module.exports = { createNote, getAllNotes, getNoteById, updateNote, replaceNote, deleteNote };
+const createBulkNotes = async (req, res) => {
+  try {
+    const notes = await Note.insertMany(req.body);
+
+    res.status(201).json({
+      success: true,
+      message: "Notes created successfully",
+      data: notes,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Bulk creation failed",
+      error: err.message,
+    });
+  }
+};
+
+module.exports = { createNote, getAllNotes, getNoteById, updateNote, replaceNote, deleteNote, createBulkNotes };
