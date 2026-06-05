@@ -200,4 +200,23 @@ const deleteBulkNotes = async (req, res) => {
   }
 };
 
-module.exports = { createNote, getAllNotes, getNoteById, updateNote, replaceNote, deleteNote, createBulkNotes, deleteBulkNotes ,deleteNote};
+const getNotesByCategory = async (req, res) => {
+  try {
+    const notes = await Note.find({
+      category: req.params.category,
+    });
+
+    res.status(200).json({
+      success: true,
+      data: notes,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch category notes",
+      error: err.message,
+    });
+  }
+};
+
+module.exports = { createNote, getAllNotes, getNoteById, updateNote, replaceNote, deleteNote, createBulkNotes, deleteBulkNotes ,deleteNote, getNotesByCategory};
