@@ -256,4 +256,29 @@ const getNoteSummary = async (req, res) => {
   }
 };
 
-module.exports = { createNote, getAllNotes, getNoteById, updateNote, replaceNote, deleteNote, createBulkNotes, deleteBulkNotes ,deleteNote, getNotesByCategory, getNotesByStatus, getNoteSummary};
+const filterNotes = async (req, res) => {
+  try {
+    const query = {};
+
+    if (req.query.category)
+      query.category = req.query.category;
+
+    if (req.query.isPinned)
+      query.isPinned = req.query.isPinned === "true";
+
+    const notes = await Note.find(query);
+
+    res.status(200).json({
+      success: true,
+      data: notes,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Filter failed",
+      error: err.message,
+    });
+  }
+};
+
+module.exports = { createNote, getAllNotes, getNoteById, updateNote, replaceNote, deleteNote, createBulkNotes, deleteBulkNotes ,deleteNote, getNotesByCategory, getNotesByStatus, getNoteSummary, filterNotes};
