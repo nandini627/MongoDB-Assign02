@@ -281,4 +281,23 @@ const filterNotes = async (req, res) => {
   }
 };
 
-module.exports = { createNote, getAllNotes, getNoteById, updateNote, replaceNote, deleteNote, createBulkNotes, deleteBulkNotes ,deleteNote, getNotesByCategory, getNotesByStatus, getNoteSummary, filterNotes};
+const filterPinnedNotes = async (req, res) => {
+  try {
+    const notes = await Note.find({
+      isPinned: req.query.isPinned === "true",
+    });
+
+    res.status(200).json({
+      success: true,
+      data: notes,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Filter failed",
+      error: err.message,
+    });
+  }
+};
+
+module.exports = { createNote, getAllNotes, getNoteById, updateNote, replaceNote, deleteNote, createBulkNotes, deleteBulkNotes ,deleteNote, getNotesByCategory, getNotesByStatus, getNoteSummary, filterNotes, filterPinnedNotes};
