@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { createNote,getAllNotes ,getNoteById,updateNote,replaceNote , deleteNote,createBulkNotes,deleteNote,deleteBulkNotes,getNotesByCategory,getNotesByStatus,getNoteSummary,filterNotes,filterPinnedNotes,filterCategoryNotes,filterNotesByDateRange} = require('../controllers/note.controller');
+const { createNote,getAllNotes ,getNoteById,updateNote,replaceNote , deleteNote,createBulkNotes,deleteNote,deleteBulkNotes,getNotesByCategory,getNotesByStatus,getNoteSummary,filterNotes,filterPinnedNotes,filterCategoryNotes,filterNotesByDateRange,paginateNotes} = require('../controllers/note.controller');
 router.post('/notes', createNote);
 router.get('/notes', getAllNotes);
 router.get('/notes/:id', getNoteById);
@@ -18,4 +18,5 @@ router.get('/notes/filter', filterNotes);
 router.get('/notes/filter/pinned', filterPinnedNotes);
 router.get('/notes/filter/category', filterCategoryNotes);
 router.get('/notes/filter/daterange', filterNotesByDateRange);
+router.get('/notes/paginate', paginateNotes);
 module.exports = router;
