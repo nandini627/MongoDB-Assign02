@@ -92,4 +92,33 @@ const updateNote = async (req, res) => {
   }
 };
 
-module.exports = { createNote, getAllNotes, getNoteById, updateNote };
+const replaceNote = async (req, res) => {
+  try {
+    const replacedNote = await Note.findOneAndReplace(
+      { _id: req.params.id },
+      req.body,
+      { new: true }
+    );
+
+    if (!replacedNote) {
+      return res.status(404).json({
+        success: false,
+        message: "Note not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Note replaced successfully",
+      data: replacedNote,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Replace failed",
+      error: err.message,
+    });
+  }
+};
+
+module.exports = { createNote, getAllNotes, getNoteById, updateNote, replaceNote };
