@@ -390,4 +390,49 @@ const paginateNotesByCategory = async (req, res) => {
     });
   }
 };
-module.exports = { createNote, getAllNotes, getNoteById, updateNote, replaceNote, deleteNote, createBulkNotes, deleteBulkNotes ,deleteNote, getNotesByCategory, getNotesByStatus, getNoteSummary, filterNotes, filterPinnedNotes, filterCategoryNotes, filterNotesByDateRange, paginateNotes, paginateNotesByCategory};
+
+const sortNotes = async (req, res) => {
+  try {
+    const field = req.query.field || "createdAt";
+    const order = req.query.order === "asc" ? 1 : -1;
+
+    const notes = await Note.find().sort({
+      [field]: order,
+    });
+
+    res.status(200).json({
+      success: true,
+      data: notes,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Sorting failed",
+      error: err.message,
+    });
+  }
+};
+
+const sortPinnedNotes = async (req, res) => {
+  try {
+    const order = req.query.order === "asc" ? 1 : -1;
+
+    const notes = await Note.find({
+      isPinned: true,
+    }).sort({
+      createdAt: order,
+    });
+
+    res.status(200).json({
+      success: true,
+      data: notes,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Sorting failed",
+      error: err.message,
+    });
+  }
+};
+module.exports = { createNote, getAllNotes, getNoteById, updateNote, replaceNote, deleteNote, createBulkNotes, deleteBulkNotes ,deleteNote, getNotesByCategory, getNotesByStatus, getNoteSummary, filterNotes, filterPinnedNotes, filterCategoryNotes, filterNotesByDateRange, paginateNotes, paginateNotesByCategory, sortNotes, sortPinnedNotes};
