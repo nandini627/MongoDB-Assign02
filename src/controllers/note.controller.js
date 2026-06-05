@@ -63,4 +63,33 @@ const getNoteById = async (req, res) => {
   }
 };
 
-module.exports = { createNote, getAllNotes, getNoteById };
+const updateNote = async (req, res) => {
+  try {
+    const updatedNote = await Note.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+
+    if (!updatedNote) {
+      return res.status(404).json({
+        success: false,
+        message: "Note not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Note updated successfully",
+      data: updatedNote,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Update failed",
+      error: err.message,
+    });
+  }
+};
+
+module.exports = { createNote, getAllNotes, getNoteById, updateNote };
