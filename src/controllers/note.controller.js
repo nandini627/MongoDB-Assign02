@@ -319,4 +319,26 @@ const filterCategoryNotes = async (req, res) => {
   }
 };
 
-module.exports = { createNote, getAllNotes, getNoteById, updateNote, replaceNote, deleteNote, createBulkNotes, deleteBulkNotes ,deleteNote, getNotesByCategory, getNotesByStatus, getNoteSummary, filterNotes, filterPinnedNotes, filterCategoryNotes};
+const filterNotesByDateRange = async (req, res) => {
+  try {
+    const notes = await Note.find({
+      createdAt: {
+        $gte: new Date(req.query.start),
+        $lte: new Date(req.query.end),
+      },
+    });
+
+    res.status(200).json({
+      success: true,
+      data: notes,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Date filter failed",
+      error: err.message,
+    });
+  }
+};
+
+module.exports = { createNote, getAllNotes, getNoteById, updateNote, replaceNote, deleteNote, createBulkNotes, deleteBulkNotes ,deleteNote, getNotesByCategory, getNotesByStatus, getNoteSummary, filterNotes, filterPinnedNotes, filterCategoryNotes, filterNotesByDateRange};
